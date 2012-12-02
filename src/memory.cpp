@@ -16,12 +16,17 @@
 
 #include "memory.h"
 
-memory::memory()
+Memory::Memory()
 {
     //ctor
 }
 
-memory::~memory()
+Memory::~Memory()
 {
     //dtor
+}
+
+void Memory::write(address addr, byte data)
+{
+    //
 }
