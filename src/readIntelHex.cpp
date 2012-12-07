@@ -23,12 +23,21 @@
 
 using namespace std;
 
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <streambuf>
+//#include <fstream>
+//#include <iostream>
+//#include <sstream>
+//#include <streambuf>
+#include <wx/Log.h>
+#include <wx/textfile.h>
 #include "readIntelHex.h"
 #include "HexUtils.h"
+
+
+wxString readIntelHex::getError(void)
+{
+    return errMessage; // TODO return the error string properly
+}
+
 
 errHRec readIntelHex::loadLine(wxString theLine, Memory *mem)
 {
@@ -47,8 +56,13 @@ errHRec readIntelHex::loadLine(wxString theLine, Memory *mem)
 
        Data, a sequence of n bytes of the data themselves, represented by 2n hex digits.
      */
-     if(theLine.length()<11)
-        return HRecTooShort;
+
+     int l = theLine.length();
+
+     if(l<11)
+     {
+         return HRecTooShort;
+     }
 
     if(!theLine.at(0)==':')
     {
@@ -130,31 +144,40 @@ bool readIntelHex::validChecksum(wxString theLine)
     return rv;
 }
 
+/*-------------------------------------------------------------------
+  readIntelHex::openFile
+
+  Purpose: reads the selected file into memory.
+           The values will be written into the specified memory locations
+*/
 bool readIntelHex::openFile(wxString fName,Memory *ram)
 {
     // Read entire file, then insert into memory.
-    ifstream f; // To open file
-    const char *cfName=fName.mb_str();
-    f.open(cfName);
-    if(!f.is_open())
-    {
-        cout<<"readIntelHex: Failed to open '"<<fName<<"'."<<endl;
-        return false;
-    }
-
     wxString theLine;
     errHRec status=HRecOk;
-    stringbuf ss;
-    while(status==HRecOk && !f.eof())
+
+    wxTextFile tFile;
+    if (!tFile.Open(fName))
     {
-        //line++;
-        f.get(ss); // ???
-        status=loadLine(theLine,ram);
-        if(status==HRecTooShort)
-        {
-            //line--;
-            return false;
-        }
+        status=HFileNotFound;
+    } else
+    {
+        theLine=tFile.GetFirstLine();
     }
+
+    while(status==HRecOk)
+    {
+        status = loadLine(theLine,ram);
+        if (status==HRecTooShort){
+            break;
+        }
+            theLine=tFile.GetNextLine();
+            if (theLine.length()==0)
+            {
+                // No EOF flag? TODO
+                break;
+            }
+    }
+
     return status==HRecOk;
 }

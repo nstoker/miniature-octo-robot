@@ -41,7 +41,7 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add directory="/Users/ns/Projects/lib65/include" />
+			<Add directory="include" />
 		</Compiler>
 		<Unit filename="COPYING" />
 		<Unit filename="README.md" />

@@ -13,6 +13,11 @@
 *.lai
 *.la
 *.a
+
+# Misc code::blocks files
 *.cbTemp
 *.depend
 *.layout
+
+# Misc unwanted files
+*.log

@@ -38,6 +38,7 @@ enum errHRec {
 	HRecChecksumErr,
 	HRecFail,
 	HRecFile,
+	HFileNotFound,
 	HRecOk=0
 };
 enum tHRec {
@@ -56,10 +57,10 @@ class readIntelHex
         /** Default destructor */
         //virtual ~readIntelHex();
         bool openFile(wxString fName,Memory *ram);
+        wxString getError(void);
     protected:
     private:
     wxString errMessage;
-
 
     errHRec loadLine(wxString theLine,Memory *ram);
     bool validChecksum(wxString theLine);
