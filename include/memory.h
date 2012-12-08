@@ -10,8 +10,10 @@ class Memory
         Memory();
         virtual ~Memory();
         void write(address addr,byte data);
+        byte read(address addr);
     protected:
     private:
+        byte ram[0xFFFF]; // 64K of memory
 };
 
 #endif // MEMORY_H

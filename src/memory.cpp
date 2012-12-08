@@ -28,5 +28,10 @@ Memory::~Memory()
 
 void Memory::write(address addr, byte data)
 {
-    //
+    ram[addr]=data;
+}
+
+byte Memory::read(address addr)
+{
+    return ram[addr];
 }
