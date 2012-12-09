@@ -13,8 +13,11 @@
     You should have received a copy of the GNU Lesser Public License
     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 */
-
+#include <assert.h>
 #include "memory.h"
+#include <string>
+#include <iostream>
+#include <iomanip>
 
 Memory::Memory()
 {
@@ -28,10 +31,44 @@ Memory::~Memory()
 
 void Memory::write(address addr, byte data)
 {
-    ram[addr]=data;
+    //assert (data<0x100); // An 8 bit CPU
+    if(data>0xFF)
+        throw errValue;
+    else
+        ram[addr]=data;
 }
 
 byte Memory::read(address addr)
 {
     return ram[addr];
+}
+
+bool Memory::ick(address addr)
+{
+    long t=0;
+    for(int a=addr;a<addr+16;a++)
+    {
+        t+=ram[a];
+    }
+    return (t>0);
+}
+
+void Memory::dump(void)
+{
+    std::cout<<"Dumping memory"<<std::endl;
+
+    std::cout.setf(std::ios::hex,std::ios::basefield);
+
+    for(int a=0x0000;a<0x100;a+=16)
+    {
+        if(ick(a))
+        {
+            std::cout<<std::setw(4)<<a<<" : ";
+            for(int b=a;b<a+0x10;b++)
+            {
+                std::cout<<std::setw(2)<<ram[b]<<" ";
+            }
+            std::cout<<std::endl;
+        }
+    }
 }
