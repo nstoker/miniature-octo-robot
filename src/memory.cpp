@@ -22,35 +22,30 @@
 Memory::Memory()
 {
     //ctor
+    for(address a=0;a<MAX_RAM;a++)
+        ram[a]=0;
 }
 
 Memory::~Memory()
 {
     //dtor
+    //
+//    delete ram;
 }
 
 void Memory::write(address addr, byte data)
 {
-    //assert (data<0x100); // An 8 bit CPU
-    if(data>0xFF)
-        throw errValue;
-    else
-        ram[addr]=data;
+    if((data>0xFF) ||(data<0x00)) throw errData;
+    if((addr>0xFFFF)||(addr<0x0000)) throw errAddress;
+
+    ram[addr]=data;
 }
 
 byte Memory::read(address addr)
 {
-    return ram[addr];
-}
+    if ((addr>0xFFFF)||(addr<0x0000)) throw errAddress;
 
-bool Memory::ick(address addr)
-{
-    long t=0;
-    for(int a=addr;a<addr+16;a++)
-    {
-        t+=ram[a];
-    }
-    return (t>0);
+    return ram[addr];
 }
 
 void Memory::dump(void)
@@ -61,7 +56,10 @@ void Memory::dump(void)
 
     for(int a=0x0000;a<0x100;a+=16)
     {
-        if(ick(a))
+        int line=0;
+        for(int b=a;b<a+0x10;b++)
+            line+=ram[b];
+        if(line>0)
         {
             std::cout<<std::setw(4)<<a<<" : ";
             for(int b=a;b<a+0x10;b++)
@@ -71,4 +69,5 @@ void Memory::dump(void)
             std::cout<<std::endl;
         }
     }
+    std::cout<<"End of dump"<<std::endl;
 }

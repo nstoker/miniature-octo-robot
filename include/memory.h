@@ -1,11 +1,15 @@
 #ifndef MEMORY_H
 #define MEMORY_H
 
-typedef unsigned short address;
-typedef unsigned int byte;
+typedef int address;
+typedef int byte;
+
+#define MAX_RAM 65536
 
 enum MemErrors {
-    errValue,
+    errData,
+    errAddress,
+    errNoMemory,enu
     };
 class Memory
 {
@@ -17,8 +21,7 @@ class Memory
         void dump(void);
     protected:
     private:
-        byte ram[0xFFFF]; // 64K of memory
-        bool ick(address);
+        byte ram[MAX_RAM]; // 64K of memory
 };
 
 #endif // MEMORY_H

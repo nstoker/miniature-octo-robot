@@ -44,7 +44,7 @@ errHRec readIntelHex::loadLine(wxString theLine, Memory *mem)
         /* Each line of Intel HEX file consists of six parts:
 
        Start code, one character, an ASCII colon ':'.
-       Byte count, two hex digits, a number of bytes (hex digit pairs) in the data field.
+       byte count, two hex digits, a number of bytes (hex digit pairs) in the data field.
        16 (0x10) or 32 (0x20) bytes of data are the usual compromise values between line
        length and address overhead.
 
@@ -76,14 +76,14 @@ errHRec readIntelHex::loadLine(wxString theLine, Memory *mem)
         return HRecChecksumErr;
     }
 
-    long numBytes=HexToInt(theLine,1,2);
+    long numbytes=HexToInt(theLine,1,2);
     address addr=HexToInt(theLine,3,4);
     int recType=HexToInt(theLine,7,2);
 
     switch (recType)
     {
         case hRecDataRecord:
-        for(int i=0;i<numBytes;i++)
+        for(int i=0;i<numbytes;i++)
         {
             int data=HexToInt(theLine,i*2+9,2);
             mem->write(addr,data);
@@ -113,7 +113,7 @@ bool readIntelHex::validChecksum(wxString theLine)
 
        If you are not working with 8-bit variables, you must suppress the overflow by AND-ing the
        result with 0xFF. The overflow may occur since both 0x100-0 and (0x00 XOR 0xFF)+1 equal 0x100.
-       If the checksum is correctly calculated, adding all the bytes (the Byte count, both bytes in
+       If the checksum is correctly calculated, adding all the bytes (the byte count, both bytes in
        Address, the Record type, each Data byte and the Checksum) together will always result in a
        value wherein the least significant byte is zero (0x00).
 
@@ -128,8 +128,8 @@ bool readIntelHex::validChecksum(wxString theLine)
 
     for(int i=0;i<numPairs;i++)
     {
-        unsigned int aByte=HexToInt(theLine,1+(i*2),2);
-        chksum += aByte;
+        unsigned int abyte=HexToInt(theLine,1+(i*2),2);
+        chksum += abyte;
         chksum &= 0xFF;
     }
 
