@@ -3,17 +3,4 @@ miniature-octo-robot
 
 A library for a simulation of a 6502 CPU.
 
-© 2012 Neil Stoker. Licensed under the LGPL v3, see the file COPYING for further details
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Lesser Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Lesser Public License for more details.
-
-    You should have received a copy of the GNU Lesser Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+Rebooting the initial wxWidgets/Codeblocks implementation for a fresh start.
